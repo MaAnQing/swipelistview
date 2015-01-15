@@ -24,3 +24,10 @@ proguard/
 
 # Log Files
 *.log
+
+# studio files
+*.iml
+.idea/
+
+# emacs files
+*~
