@@ -3,6 +3,7 @@ package com.huami.madroid.swipelistview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -23,7 +24,7 @@ public class SwipeDelListView extends ListView{
     private boolean isDeleteShown;
 
     // 当前处理的item
-    private ViewGroup mPointChild;
+    private ViewGroup mItemView;
     // 当前处理的item的LayoutParams
     private LinearLayout.LayoutParams mLayoutParams;
 
@@ -59,22 +60,30 @@ public class SwipeDelListView extends ListView{
 
     // 处理action_down事件
     private void performActionDown(MotionEvent ev) {
-        if(isDeleteShown) {
+
+        if(isDeleteShown && !isTheItem(ev)) {
             turnToNormal();
         }
 
         mDownX = (int) ev.getX();
         mDownY = (int) ev.getY();
         // 获取当前点的item
-        mPointChild = (ViewGroup) getChildAt(pointToPosition(mDownX, mDownY)
+        mItemView = (ViewGroup) getChildAt(pointToPosition(mDownX, mDownY)
                 - getFirstVisiblePosition());
+
+//        if(isDeleteShown && isTheItem(ev)){
+//            turnToNormal1();
+//        }
+//        if(isDeleteShown ) {
+//            turnToNormal();
+//        }
         // 获取删除按钮的宽度
-        mDeleteBtnWidth = mPointChild.getChildAt(1).getLayoutParams().width;
-        mLayoutParams = (LinearLayout.LayoutParams) mPointChild.getChildAt(0)
+        mDeleteBtnWidth = mItemView.getChildAt(1).getLayoutParams().width;
+        mLayoutParams = (LinearLayout.LayoutParams) mItemView.getChildAt(0)
                 .getLayoutParams();
         // 重新设置textView的layout_width 等于屏幕宽度
         mLayoutParams.width = mScreenWidth;
-        mPointChild.getChildAt(0).setLayoutParams(mLayoutParams);
+        mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
     }
 
     // 处理action_move事件
@@ -83,20 +92,37 @@ public class SwipeDelListView extends ListView{
         int nowY = (int) ev.getY();
         if(Math.abs(nowX - mDownX) > Math.abs(nowY - mDownY)) {
             // 如果向左滑动
-            if(nowX < mDownX) {
+            if(  !isDeleteShown && nowX < mDownX) {
+                Log.i("move","right move") ;
                 // 计算要偏移的距离
-                int scroll = (nowX - mDownX) / 2;
+                int rightScroll = (nowX - mDownX) / 2;
                 // 如果大于了删除按钮的宽度， 则最大为删除按钮的宽度
-                if(-scroll >= mDeleteBtnWidth) {
-                    scroll = -mDeleteBtnWidth;
+                if(-rightScroll >= mDeleteBtnWidth) {
+                    rightScroll = -mDeleteBtnWidth;
                 }
                 // 重新设置leftMargin
-                mLayoutParams.leftMargin = scroll;
-                mPointChild.getChildAt(0).setLayoutParams(mLayoutParams);
+                mLayoutParams.leftMargin = rightScroll;
+                mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
+                //mItemView.setBackgroundColor(getResources().getColor(R.color.background_floating_material_dark));
+            }
+            if(isDeleteShown && nowX > mDownX){
+                //when delete button is shown and left move
+                Log.i("move","left move") ;
+                int leftScroll = (nowX - mDownX)/2 ;
+                if(leftScroll >= mDeleteBtnWidth){
+                    leftScroll = mDeleteBtnWidth ;
+                }
+                // 重新设置leftMargin
+                mLayoutParams.leftMargin =  -mDeleteBtnWidth +leftScroll;
+                mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
+               // mItemView.setBackgroundColor(getResources().getColor(R.color.background_floating_material_dark));
             }
 
             return true;
         }
+//        if(isDeleteShown){
+//            turnToNormal();
+//        }
         return super.onTouchEvent(ev);
     }
 
@@ -111,7 +137,7 @@ public class SwipeDelListView extends ListView{
             turnToNormal();
         }
 
-        mPointChild.getChildAt(0).setLayoutParams(mLayoutParams);
+        mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
     }
 
     /**
@@ -119,8 +145,43 @@ public class SwipeDelListView extends ListView{
      */
     public void turnToNormal() {
         mLayoutParams.leftMargin = 0;
-        mPointChild.getChildAt(0).setLayoutParams(mLayoutParams);
+        mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
+        mItemView.setBackgroundColor(getResources().getColor(R.color.background_material_light));
         isDeleteShown = false;
+        //Log.i("TAG","is not the same item" ) ;
+    }
+
+//    /**
+//     * 变为正常状态 cool
+//     */
+//
+//    public void turnToNormal1(){
+//        mLayoutParams.rightMargin = 0;
+//        mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
+//        mItemView.setBackgroundColor(getResources().getColor(R.color.background_material_light));
+//        isDeleteShown = false;
+//        //Log.i("TAG","is the same item" ) ;
+//
+//    }
+
+    /**
+     * 变为正常状态 cool
+     */
+    public boolean isTheItem(MotionEvent ev){
+        if(mItemView == getItemPosition(ev)){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+    private ViewGroup getItemPosition(MotionEvent ev){
+
+        int nowX = (int) ev.getX();
+        int nowY = (int) ev.getY();
+        return (ViewGroup) getChildAt(pointToPosition(nowX, nowY)
+                - getFirstVisiblePosition());
     }
 
     /**

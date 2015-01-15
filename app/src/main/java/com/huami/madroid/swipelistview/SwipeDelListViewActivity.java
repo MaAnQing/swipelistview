@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,7 @@ public class SwipeDelListViewActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 if(mListView.canClick()) {
-                    Toast.makeText(SwipeDelListViewActivity.this, mData.get(position), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(SwipeDelListViewActivity.this, mData.get(position), Toast.LENGTH_SHORT).show();
                 }
             }
         });
