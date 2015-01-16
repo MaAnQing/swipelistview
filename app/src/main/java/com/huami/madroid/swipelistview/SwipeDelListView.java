@@ -3,7 +3,6 @@ package com.huami.madroid.swipelistview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -71,12 +70,6 @@ public class SwipeDelListView extends ListView{
         mItemView = (ViewGroup) getChildAt(pointToPosition(mDownX, mDownY)
                 - getFirstVisiblePosition());
 
-//        if(isDeleteShown && isTheItem(ev)){
-//            turnToNormal1();
-//        }
-//        if(isDeleteShown ) {
-//            turnToNormal();
-//        }
         // 获取删除按钮的宽度
         mDeleteBtnWidth = mItemView.getChildAt(1).getLayoutParams().width;
         mLayoutParams = (LinearLayout.LayoutParams) mItemView.getChildAt(0)
@@ -93,7 +86,6 @@ public class SwipeDelListView extends ListView{
         if(Math.abs(nowX - mDownX) > Math.abs(nowY - mDownY)) {
             // 如果向左滑动
             if(  !isDeleteShown && nowX < mDownX) {
-                Log.i("move","right move") ;
                 // 计算要偏移的距离
                 int rightScroll = (nowX - mDownX) / 2;
                 // 如果大于了删除按钮的宽度， 则最大为删除按钮的宽度
@@ -103,11 +95,10 @@ public class SwipeDelListView extends ListView{
                 // 重新设置leftMargin
                 mLayoutParams.leftMargin = rightScroll;
                 mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
-                //mItemView.setBackgroundColor(getResources().getColor(R.color.background_floating_material_dark));
+                mItemView.setBackgroundColor(getResources().getColor(R.color.background_floating_material_dark));
             }
+            //when delete button is shown and left move
             if(isDeleteShown && nowX > mDownX){
-                //when delete button is shown and left move
-                Log.i("move","left move") ;
                 int leftScroll = (nowX - mDownX)/2 ;
                 if(leftScroll >= mDeleteBtnWidth){
                     leftScroll = mDeleteBtnWidth ;
@@ -115,7 +106,7 @@ public class SwipeDelListView extends ListView{
                 // 重新设置leftMargin
                 mLayoutParams.leftMargin =  -mDeleteBtnWidth +leftScroll;
                 mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
-               // mItemView.setBackgroundColor(getResources().getColor(R.color.background_floating_material_dark));
+                mItemView.setBackgroundColor(getResources().getColor(R.color.background_floating_material_dark));
             }
 
             return true;
@@ -148,21 +139,9 @@ public class SwipeDelListView extends ListView{
         mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
         mItemView.setBackgroundColor(getResources().getColor(R.color.background_material_light));
         isDeleteShown = false;
-        //Log.i("TAG","is not the same item" ) ;
+
     }
 
-//    /**
-//     * 变为正常状态 cool
-//     */
-//
-//    public void turnToNormal1(){
-//        mLayoutParams.rightMargin = 0;
-//        mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
-//        mItemView.setBackgroundColor(getResources().getColor(R.color.background_material_light));
-//        isDeleteShown = false;
-//        //Log.i("TAG","is the same item" ) ;
-//
-//    }
 
     /**
      * 变为正常状态 cool
