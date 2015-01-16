@@ -21,11 +21,11 @@ public class SlideCutListView extends ListView {
      */
     private int slidePosition;
     /**
-     * 手指按下X的坐标
+     * 手指按下Y的坐标
      */
     private int downY;
     /**
-     * 手指按下Y的坐标
+     * 手指按下X的坐标
      */
     private int downX;
     /**
@@ -138,7 +138,7 @@ public class SlideCutListView extends ListView {
     private void scrollLeft() {
         removeDirection = RemoveDirection.LEFT;
         final int delta = (screenWidth - itemView.getScrollX());
-    // 调用startScroll方法来设置一些滚动的参数，我们在computeScroll()方法中调用scrollTo来滚动item
+        // 调用startScroll方法来设置一些滚动的参数，我们在computeScroll()方法中调用scrollTo来滚动item
         scroller.startScroll(itemView.getScrollX(), 0, delta, 0,
                 Math.abs(delta));
         postInvalidate(); // 刷新itemView
@@ -170,7 +170,7 @@ public class SlideCutListView extends ListView {
                 case MotionEvent.ACTION_MOVE:
                     int deltaX = downX - x;
                     downX = x;
-    // 手指拖动itemView滚动, deltaX大于0向左滚动，小于0向右滚
+                    // 手指拖动itemView滚动, deltaX大于0向左滚动，小于0向右滚
                     itemView.scrollBy(deltaX, 0);
                     break;
                 case MotionEvent.ACTION_UP:
@@ -183,23 +183,23 @@ public class SlideCutListView extends ListView {
                         scrollByDistanceX();
                     }
                     recycleVelocityTracker();
-        // 手指离开的时候就不响应左右滚动
+                    // 手指离开的时候就不响应左右滚动
                     isSlide = false;
                     break;
             }
             return true; // 拖动的时候ListView不滚动
         }
-//否则直接交给ListView来处理onTouchEvent事件
+        //否则直接交给ListView来处理onTouchEvent事件
         return super.onTouchEvent(ev);
     }
     @Override
     public void computeScroll() {
-// 调用startScroll的时候scroller.computeScrollOffset()返回true，
+        // 调用startScroll的时候scroller.computeScrollOffset()返回true，
         if (scroller.computeScrollOffset()) {
-// 让ListView item根据当前的滚动偏移量进行滚动
+            // 让ListView item根据当前的滚动偏移量进行滚动
             itemView.scrollTo(scroller.getCurrX(), scroller.getCurrY());
             postInvalidate();
-// 滚动动画结束的时候调用回调接口
+            // 滚动动画结束的时候调用回调接口
             if (scroller.isFinished()) {
                 if (mRemoveListener == null) {
                     throw new NullPointerException("RemoveListener is null, we should called setRemoveListener()");

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Scroller;
 
 /**
  * Created by madroid on 15-1-14.
@@ -18,6 +19,7 @@ public class SwipeDelListView extends ListView{
     private int mDownX;
     private int mDownY;
     private int mDeleteBtnWidth;
+    private Scroller mScroller;
 
     // 删除按钮是否正在显示
     private boolean isDeleteShown;
@@ -39,6 +41,9 @@ public class SwipeDelListView extends ListView{
         DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);
         mScreenWidth = dm.widthPixels;
+
+        mScroller = new Scroller(context) ;
+
     }
 
     @Override
@@ -97,7 +102,7 @@ public class SwipeDelListView extends ListView{
                 mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
                 mItemView.setBackgroundColor(getResources().getColor(R.color.background_floating_material_dark));
             }
-            //when delete button is shown and left move
+            //when delete button is shown and right move
             if(isDeleteShown && nowX > mDownX){
                 int leftScroll = (nowX - mDownX)/2 ;
                 if(leftScroll >= mDeleteBtnWidth){
@@ -142,9 +147,33 @@ public class SwipeDelListView extends ListView{
 
     }
 
+/*
+    */
+/**
+     * 变为正常状态
+     *//*
+
+    public void turnToNormalByScroll(){
+
+        rightScroll();
+        turnToNormal();
+    }
+
+    //right remove Animation
+    private void rightScroll(){
+
+        final int delta = (mScreenWidth - mItemView.getScrollX());
+        // 调用startScroll方法来设置一些滚动的参数，我们在computeScroll()方法中调用scrollTo来滚动item
+        mScroller.startScroll(mItemView.getScrollX(), 0, -delta, 0,
+                Math.abs(delta));
+        postInvalidate();
+        //mItemView.scrollTo(0,0) ;
+    }
+*/
+
 
     /**
-     * 变为正常状态 cool
+     * 判断当前item是否为isDeleteButton的Item
      */
     public boolean isTheItem(MotionEvent ev){
         if(mItemView == getItemPosition(ev)){
