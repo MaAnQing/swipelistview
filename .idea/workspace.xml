@@ -17,10 +17,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.huami.madroid.swipelistview" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f01fd51-fac9-4634-8996-33066a89309c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/huami/madroid/swipelistview/SwipeDelListView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/huami/madroid/swipelistview/SwipeDelListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="4f01fd51-fac9-4634-8996-33066a89309c" name="Default" comment="" />
     <ignored path="swipelistview.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
