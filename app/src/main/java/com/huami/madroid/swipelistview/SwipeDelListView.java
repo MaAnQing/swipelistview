@@ -147,11 +147,25 @@ public class SwipeDelListView extends ListView{
 
     }
 
-/*
-    */
-/**
+//    public void turnToNormalAn() {
+//        while (true){
+//            if(mLayoutParams.leftMargin != 0){
+//                mLayoutParams.leftMargin = - ( mLayoutParams.leftMargin - mDeleteBtnWidth/10);
+//                mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
+//            }
+//            break;
+//        }
+//
+//       // mLayoutParams.leftMargin = 0;
+//        mItemView.getChildAt(0).setLayoutParams(mLayoutParams);
+//        mItemView.setBackgroundColor(getResources().getColor(R.color.background_material_light));
+//        isDeleteShown = false;
+//
+//    }
+
+    /**
      * 变为正常状态
-     *//*
+     */
 
     public void turnToNormalByScroll(){
 
@@ -169,8 +183,16 @@ public class SwipeDelListView extends ListView{
         postInvalidate();
         //mItemView.scrollTo(0,0) ;
     }
-*/
 
+
+    //add a speed method to swipe animation
+    private void setSwipeSpeed(MotionEvent ev){
+        int nowX = (int) ev.getX() ;
+        int nowY = (int) ev.getY() ;
+        int time = 1 ;
+        int speed = mDeleteBtnWidth / time ;
+
+    }
 
     /**
      * 判断当前item是否为isDeleteButton的Item
