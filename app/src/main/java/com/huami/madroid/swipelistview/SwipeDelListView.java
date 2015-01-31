@@ -171,6 +171,7 @@ public class SwipeDelListView extends ListView{
 
         rightScroll();
         turnToNormal();
+
     }
 
     //right remove Animation

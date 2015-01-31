@@ -25,14 +25,10 @@ proguard/
 # Log Files
 *.log
 
-<<<<<<< HEAD
-.idea/workspace.xml
-
-=======
 # studio files
 *.iml
 .idea/
 
 # emacs files
 *~
->>>>>>> d5284c56ec48cff4e9d928e1fe1b7bc9c3a10e67
+
